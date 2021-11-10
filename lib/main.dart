@@ -7,20 +7,20 @@ import 'redux_main.dart';
 void main() {
   final store = Store<AppState>(counterReducer, initialState: AppState(0));
 
-  runApp(MyApp(store: store));
+  runApp(CounterPage(store: store));
 }
 
-class MyApp extends StatelessWidget {
+class CounterPage extends StatelessWidget {
   final Store<AppState> store;
 
-  const MyApp({Key? key, required this.store}) : super(key: key);
+  const CounterPage({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
         store: store,
         child: MaterialApp(
-            title: 'Flutter Redux Demo',
+            title: 'Flutter Redux Counter',
             home: Scaffold(
               body: Center(
                 child: StoreConnector<AppState, String>(
