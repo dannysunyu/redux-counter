@@ -1,43 +1,37 @@
 import 'package:redux/redux.dart';
 
-enum Action {
+enum CounterAction {
   increment,
   decrement,
   reset,
 }
 
-class Counter {
+class AppState {
   final int count;
 
-  Counter(this.count);
-}
-
-class AppState {
-  Counter counter;
-
-  AppState(this.counter);
+  AppState(this.count);
 }
 
 AppState counterReducer(AppState state, dynamic action) {
-  if (action == Action.increment) {
-    return AppState(Counter(state.counter.count + 1));
-  } else if (action == Action.reset) {
-    return AppState(Counter(0));
+  if (action == CounterAction.increment) {
+    return AppState(state.count + 1);
+  } else if (action == CounterAction.reset) {
+    return AppState(0);
   } else {
     return state;
   }
 }
 
 void main() {
-  final store = Store<AppState>(counterReducer, initialState: AppState(Counter(0)));
+  final store = Store<AppState>(counterReducer, initialState: AppState(0));
 
-  print('Initial count: ${store.state.counter.count}');
-  store.dispatch(Action.increment);
-  print('Count: ${store.state.counter.count}');
+  print('Initial count: ${store.state.count}');
+  store.dispatch(CounterAction.increment);
+  print('Count: ${store.state.count}');
 
-  store.dispatch(Action.increment);
-  print('Count: ${store.state.counter.count}');
+  store.dispatch(CounterAction.increment);
+  print('Count: ${store.state.count}');
 
-  store.dispatch(Action.reset);
-  print('Count: ${store.state.counter.count}');
+  store.dispatch(CounterAction.reset);
+  print('Count: ${store.state.count}');
 }
