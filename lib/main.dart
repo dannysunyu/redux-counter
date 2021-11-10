@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Counter(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class Counter extends ChangeNotifier {
+  int _count = 0;
+
+  int get count => _count;
+
+  void increment() {
+    _count++;
+
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -16,31 +34,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CounterPage extends StatefulWidget {
+class CounterPage extends StatelessWidget {
   const CounterPage({Key? key}) : super(key: key);
-
-
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  int _counter = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          '$_counter',
-          style: Theme.of(context).textTheme.headline1,
-        ),
+        child: Consumer<Counter>(builder: (context, counter, child) {
+          return Text(
+            '${counter.count}',
+            style: Theme.of(context).textTheme.headline1,
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            _counter++;
-          });
+          final counter = Provider.of<Counter>(context, listen: false);
+          counter.increment();
         },
         child: const Icon(Icons.add),
       ),
